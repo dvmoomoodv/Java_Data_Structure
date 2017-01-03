@@ -1,13 +1,21 @@
 package list_stack;
 import java.util.Scanner;
 
-public class Main {
-    static int listCount = 0;
+// 람다식을 위한 연습
+@FunctionalInterface
+interface InterfaceList {
+    public int method();
+}
 
+public class Main {
+    static int StackCount = 0;
     public static void main(String[] args) {
-        List[] list = new List[listCount]; // 사용자는 0개
-        List Temp = new List(); // 임시 사용 변수
         InterfaceList interfaceList;
+        Stack[] stack; // 실제 Stack
+        Stack[] Temp; // 내용 넣을 스택
+        Stack Tempstack; // 임시용 Stack
+        stack = new Stack[StackCount];
+        Tempstack = new Stack();
 
         while (true) {
             int ContentNumber; // 숫자 입력
@@ -25,48 +33,48 @@ public class Main {
             switch (ContentNumber) {
                 // 초기화 ( 무 상태로 만드는 것 )
                 case 1:
-                    listCount = 0;
-                    list = new List[listCount];
+                    StackCount = 0;
+                    stack = new Stack[StackCount];
+                    Tempstack.init();
                     break;
                 // 삽입
                 case 2:
-                    try {
-                        listCount++;
-                        List[] Templist = new List[listCount];
-                        for (int i = 0; i < listCount; i++) Templist[i] = new List();
-                        Templist = Temp.List_Push(list);
-                        list = new List[listCount];
-                        for (int i = 0; i < listCount; i++) {
-                            list[i] = new List();
-                            list[i] = Templist[i];
-                        }
-                    }catch(ArrayIndexOutOfBoundsException e)
+                    StackCount++;
+                    Temp = new Stack[StackCount];
+                    for(int i = 0;i<StackCount;i++)
                     {
-                        e.printStackTrace();
+                        Temp[i] = new Stack();
                     }
+                    Temp = Tempstack.Push(stack);
+                    stack = new Stack[StackCount];
+                    for(int i=0;i<StackCount;i++)
+                    {
+                        stack[i] = new Stack();
+                        stack[i] = Temp[i];
+                    }
+
                     break;
                 // 삭제
                 case 3:
-                    try {
-                        if(listCount > 0)listCount--;
-                        List[] Templist = new List[listCount];
-                        for (int i = 0; i < listCount; i++) Templist[i] = new List();
-                        Templist = Temp.List_Pop(list);
-                        list = new List[listCount];
-                        for (int i = 0; i < listCount; i++) {
-                            list[i] = new List();
-                            list[i] = Templist[i];
+                    if(StackCount > 0) {
+                        StackCount--;
+                        Temp = new Stack[StackCount];
+                        for (int i = 0; i < StackCount; i++) {
+                            Temp[i] = new Stack();
                         }
-                    }catch(NegativeArraySizeException e)
-                    {
-                        e.printStackTrace();
+                        Temp = Tempstack.Pop(stack);
+                        stack = new Stack[StackCount];
+                        for (int i = 0; i < StackCount; i++) {
+                            stack[i] = new Stack();
+                            stack[i] = Temp[i];
+                        }
                     }
                     break;
                 case 4:
-                    Temp.List_Print(list);
+                    Tempstack.Print(stack);
                     break;
                 case 5:
-                    System.out.println("현재 리스트 갯수 : " + listCount);
+                    Tempstack.length(stack);
                     break;
             }
         }

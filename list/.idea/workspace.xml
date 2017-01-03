@@ -21,8 +21,8 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="655">
-              <caret line="238" column="0" lean-forward="true" selection-start-line="166" selection-start-column="0" selection-end-line="238" selection-end-column="0" />
+            <state relative-caret-position="500">
+              <caret line="155" column="9" lean-forward="true" selection-start-line="145" selection-start-column="8" selection-end-line="155" selection-end-column="9" />
               <folding>
                 <element signature="class#InterfaceList#0" expanded="false" />
               </folding>
@@ -562,7 +562,7 @@
       <workItem from="1483087268432" duration="199000" />
       <workItem from="1483325314473" duration="592000" />
       <workItem from="1483326930941" duration="11660000" />
-      <workItem from="1483412410824" duration="748000" />
+      <workItem from="1483412410824" duration="2581000" />
     </task>
     <task id="LOCAL-00001" summary="All Change">
       <created>1483087382717</created>
@@ -575,11 +575,11 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13715000" />
+    <option name="totallyTimeSpent" value="15548000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="0" width="1924" height="1038" extended-state="1" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -703,8 +703,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="655">
-          <caret line="238" column="0" lean-forward="true" selection-start-line="166" selection-start-column="0" selection-end-line="238" selection-end-column="0" />
+        <state relative-caret-position="500">
+          <caret line="155" column="9" lean-forward="true" selection-start-line="145" selection-start-column="8" selection-end-line="155" selection-end-column="9" />
           <folding>
             <element signature="class#InterfaceList#0" expanded="false" />
           </folding>
