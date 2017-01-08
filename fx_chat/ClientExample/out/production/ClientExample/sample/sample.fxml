@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="500" prefWidth="500" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <Button fx:id="ConnectionButton" layoutX="28.0" layoutY="33.0" prefHeight="37.0" prefWidth="152.0" text="연결" />
+   <Button fx:id="SendButton" layoutX="197.0" layoutY="33.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="152.0" text="메시지 전송" />
+   <TextArea fx:id="MessageText" editable="false" layoutX="28.0" layoutY="94.0" prefHeight="227.0" prefWidth="437.0" />
+   <TextArea fx:id="SendMessageText" layoutX="28.0" layoutY="352.0" prefHeight="117.0" prefWidth="437.0" />
+   <Button fx:id="ReadButton" layoutX="379.0" layoutY="33.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="95.0" text="읽기" />
+</AnchorPane>

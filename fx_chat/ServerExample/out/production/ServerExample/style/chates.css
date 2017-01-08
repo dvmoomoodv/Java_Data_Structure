@@ -1,0 +1,9 @@
+#ContentArea
+{
+
+    -fx-background-color: yellow;
+    /*-fx-background-image: url("../image/background.jpg");*/
+    -fx-border-image-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-text-fill : blue;
+}
