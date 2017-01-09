@@ -6,12 +6,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<?import java.lang.String?>
-<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainController"
-stylesheets="@../style/chates.css">
+<AnchorPane prefHeight="768.0" prefWidth="1024.0" stylesheets="@../style/chates.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainController">
    <children>
       <!--버튼 및 처리-->
-      <TextArea fx:id="ContentArea" id ="ContentArea" accessibleText="false" cache="true" layoutX="26.0" layoutY="110.0" prefHeight="586.0" prefWidth="761.0" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="237.0" AnchorPane.topAnchor="110.0" />
+      <TextArea id="ContentArea" fx:id="ContentArea" accessibleText="false" cache="true" editable="false" layoutX="26.0" layoutY="110.0" prefHeight="586.0" prefWidth="761.0" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="237.0" AnchorPane.topAnchor="110.0" />
       <!--표시하는 라벨-->
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="350.0" layoutY="20.0" prefHeight="27.0" prefWidth="280.0" text="채팅 관리" textAlignment="CENTER">
          <font>

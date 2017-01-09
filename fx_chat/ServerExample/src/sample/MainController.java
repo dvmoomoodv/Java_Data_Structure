@@ -2,6 +2,7 @@ package sample;
 
 
 import com.sun.security.ntlm.Client;
+import com.sun.security.ntlm.NTLMException;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +13,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -19,6 +23,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Vector;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -71,7 +76,6 @@ public class MainController implements Initializable {
         });
         runLater(() -> {
             try {
-                this.ContentArea.setDisable(true);
                 this.ContentArea.setText("");
             } finally {
             }
@@ -80,75 +84,94 @@ public class MainController implements Initializable {
 
     // Client 승인 버튼
     public void InButtonClicked(ActionEvent event) {
-        Platform.runLater(() -> {
-            if (serverSocket.isClosed()) {
-                try {
-                    serverSocket = new ServerSocket();
-                    serverSocket.bind(new InetSocketAddress("localhost", 5003));
-                    Platform.runLater(() -> {
-                        ContentArea.appendText("서버를 재연결하였습니다.\n");
-                    });
-                } catch (IOException e) {
-
-                }
-            }
-
-            try {
-                // 대화상자를 이용하여 메시지를 띄움
-                Stage Primary = (Stage) InButton.getScene().getWindow();
-                Stage dialog = new Stage(StageStyle.DECORATED);
-                dialog.initModality(Modality.WINDOW_MODAL);
-                dialog.initOwner(Primary);
-                dialog.setTitle("IP 확인 후 승인");
-                Parent parent = FXMLLoader.load(getClass().getResource("../scene/clientstyle.fxml"));
-                TextArea Area = (TextArea) parent.lookup("#TextID");
-                Button OKButton = (Button) parent.lookup("#OKButton");
-                Button NOButton = (Button) parent.lookup("#NOButton");
-
-                Socket socket = serverSocket.accept();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
                 Platform.runLater(() -> {
+                    if (serverSocket.isClosed()) {
+                        try {
+                            serverSocket = new ServerSocket();
+                            serverSocket.bind(new InetSocketAddress("localhost", 5003));
+                            Platform.runLater(() -> {
+                                ContentArea.appendText("서버를 재연결하였습니다.\n");
+                            });
+
+                        } catch (IOException e) {
+
+                        }
+                    }
+
                     try {
-                        isa = (InetSocketAddress) socket.getRemoteSocketAddress();
-                        ContentArea.appendText("IP :" + isa.getHostName() + "가 연결을 시도 하였습니다.\n");
-                        Area.setText("IP :" + isa.getHostName() + "가 연결을 시도 하였습니다. 승낙 하시겠습니까?");
-                    } catch (Exception e) {
+                        // 대화상자를 이용하여 메시지를 띄움
+                        Stage Primary = (Stage) InButton.getScene().getWindow();
+                        Stage dialog = new Stage(StageStyle.DECORATED);
+                        dialog.initModality(Modality.WINDOW_MODAL);
+                        dialog.initOwner(Primary);
+                        dialog.setTitle("IP 확인 후 승인");
+                        Parent parent = FXMLLoader.load(getClass().getResource("../scene/clientstyle.fxml"));
+                        TextArea Area = (TextArea) parent.lookup("#TextID");
+                        Button OKButton = (Button) parent.lookup("#OKButton");
+                        Button NOButton = (Button) parent.lookup("#NOButton");
 
-                    }
-                    finally {
-                        UIString = isa.toString();
-                    }
-                });
-
-                // 작동 시작
-
-                Platform.runLater(() -> {
-                    OKButton.setOnAction(event1 -> {
-                        ContentArea.appendText("IP :" + isa.getHostName() + "의 연결이 승낙되었습니다.\n");
-                        dialog.close();
-                    });
-
-                    NOButton.setOnAction(event1 -> {
-                        if (!serverSocket.isClosed()) {
+                        Socket socket = serverSocket.accept();
+                        Platform.runLater(() -> {
                             try {
-                                serverSocket.close();
-                            } catch (IOException e) {
+                                isa = (InetSocketAddress) socket.getRemoteSocketAddress();
+                                ContentArea.appendText("IP :" + isa.getHostName() + "가 연결을 시도 하였습니다.\n");
+                                Area.setText("IP :" + isa.getHostName() + "가 연결을 시도 하였습니다. 승낙 하시겠습니까?");
+                            } catch (Exception e) {
 
                             }
-                        }
-                        ContentArea.appendText("IP :" + isa.getHostName() + "의 연결을 취소하고 서버를 껐습니다.\n");
-                        dialog.close();
-                    });
+                            finally {
+                                UIString = isa.toString();
+                            }
+                        });
+
+                        // 작동 시작
+
+                        Platform.runLater(() -> {
+                            OKButton.setOnAction(event1 -> {
+                                try {
+                                    Client client = new Client(socket);
+                                    Platform.runLater(()->{
+                                        ContentArea.appendText(  (connection.size()+1) + "개가 연결이 되었습니다.\n");
+                                        connection.add(client);
+                                    });
+                                }catch (Exception e)
+                                {
+
+                                }
+
+                                ContentArea.appendText("IP :" + isa.getHostName() + "의 연결이 승낙되었습니다.\n");
+                                dialog.close();
+                            });
+
+                            NOButton.setOnAction(event1 -> {
+                                if (!serverSocket.isClosed()) {
+                                    try {
+                                        serverSocket.close();
+                                    } catch (IOException e) {
+
+                                    }
+                                }
+                                ContentArea.appendText("IP :" + isa.getHostName() + "의 연결을 취소하고 서버를 껐습니다.\n");
+                                dialog.close();
+                            });
+                        });
+
+                        Scene scene = new Scene(parent);
+                        dialog.setScene(scene);
+                        dialog.setResizable(false);
+                        dialog.show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 });
 
-                Scene scene = new Scene(parent);
-                dialog.setScene(scene);
-                dialog.setResizable(false);
-                dialog.show();
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-
-        });
+        };
+        executorService.submit(runnable);
 
     }
 
@@ -167,6 +190,61 @@ public class MainController implements Initializable {
 
         });
     }
+    class Client {
+        Socket socket ;
+        Client(Socket socket)
+        {
+            this.socket = socket;
+            ClientReceive();
+        }
+        public void ClientReceive(){
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        while(true) {
+                            byte[] Bytes = new byte[100];
+                            InputStream inputStream = socket.getInputStream();
+                            int readByteCount = inputStream.read(Bytes);
+                            if (readByteCount == -1) {
+                                throw new IOException();
+                            }
+                            String data = new String(Bytes, 0, readByteCount, "UTF-8");
+                            for (Client client : connection)
+                            {
+                                client.ClientSend(data);
+                            }
+
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            };
+            executorService.submit(runnable);
+        }
+        public void ClientSend(String data){
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        byte[] Bytes = data.getBytes("UTF-8");
+                        OutputStream outputStream = socket.getOutputStream();
+                        outputStream.write(Bytes);
+                        outputStream.flush();
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            };
+            executorService.submit(runnable);
+        }
+    }
 
 
 }
+

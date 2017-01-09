@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,13 +18,12 @@ import java.util.ResourceBundle;
 import static javafx.application.Platform.runLater;
 
 public class Controller  implements Initializable {
-    Socket socket = new Socket();
+    Socket socket;
     @FXML
     private Button ConnectionButton;
     @FXML
     private Button SendButton;
-    @FXML
-    private Button ReadButton;
+
     @FXML
     private TextArea MessageText;
     @FXML
@@ -33,10 +33,8 @@ public class Controller  implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.ConnectionButton.setOnAction((ev) -> this.ConnectionButtonClicked(ev));
         this.SendButton.setOnAction((ev)->this.SendButtonClicked(ev));
-        this.ReadButton.setOnAction((ev)->this.ReadButtonClicked(ev));
         runLater(() -> {
             try {
-                this.MessageText.setDisable(true);
                 this.MessageText.setText("");
             } finally {
             }
@@ -51,49 +49,70 @@ public class Controller  implements Initializable {
 
     public void ConnectionButtonClicked(ActionEvent Event)
     {
-        try {
-            socket.connect(new InetSocketAddress("localhost",5003));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        Thread thread = new Thread(){
+          @Override
+            public void run(){
+              try {
+                  socket = new Socket();
+                  socket.connect(new InetSocketAddress("localhost",5003));
+                  Platform.runLater(()->{
+                      MessageText.setText("서버와의 연결이 되었습니다.\n");
+                  });
+              } catch (IOException e) {
+                  e.printStackTrace();
+              }
+              ServerReceive();
+          }
+        };
+      thread.start();
     }
 
     public void SendButtonClicked(ActionEvent Event)
     {
 
-        runLater(() -> {
-            byte[] byteArr  = new byte[200];
-            try {
-                InputStream inputStream = socket.getInputStream();
+        Thread thread = new Thread(){
+            @Override
+            public void run(){
+                String Message = SendMessageText.getText().toString();
+                runLater(() -> {
+                    try{
+                        byte[] byteArr = Message.getBytes("UTF-8");
+                        OutputStream outputStream = socket.getOutputStream();
+                        outputStream.write(byteArr);
+                        outputStream.flush();
 
-                int readByteCount = inputStream.read(byteArr);
-                if(readByteCount == -1){throw new IOException();}
-                String data = new String(byteArr,0,readByteCount,"UTF-8");
-                this.MessageText.appendText(data);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
 
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-
-        });
+        };
+        thread.start();
 
     }
 
-    public void ReadButtonClicked(ActionEvent event)
-    {
-        String Message = SendMessageText.getText().toString();
-        runLater(() -> {
+
+    public void ServerReceive(){
+        while(true)
+        {
             try{
-                byte[] byteArr = Message.getBytes("UTF-8");
-                OutputStream outputStream = socket.getOutputStream();
-                outputStream.write(byteArr);
-                outputStream.flush();
+                byte[] Bytes = new byte[100];
+                InputStream inputStream = socket.getInputStream();
+                int readByteCount = inputStream.read(Bytes);
+                if(readByteCount == -1){
+                    break;
+                }
+                String data = new String(Bytes,0,readByteCount,"UTF-8");
+                Platform.runLater(()->{
+                    MessageText.appendText("서버 메시지 : " + data + "\n");
+                });
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
+        }
     }
-
 
 }
