@@ -1,12 +1,14 @@
+import javafx.geometry.Pos;
+
 import java.util.*;
 
-public class List {
+public class Stack {
 
   private int Number; // 항의 갯수
   private boolean EmptyNumber; // 비어있는지 확인
   private String[] Context; // 확인 내용
 
-  public List(){
+  public Stack(){
       this.Number = 0;
       this.EmptyNumber = false;
       this.Context = new String[0];
@@ -79,36 +81,36 @@ public class List {
         }
 
   }
-    // 삭제하는 함수
-    public void Delete(int Position){
-        // 삭제 불가능한 위치에 삽입
-        if(this.Number == 0){
-            System.out.println("삭제할 것이 없습니다.");
-        }
-        else if((Position>(this.Number + 2)) || (Position<1)){
-            System.out.println("삭제할 수 없습니다.");
-        }
-        // 맨 처음 삭제
-        else if(Position == 1 && Number ==1){
-            this.Number = 0;
-            this.EmptyNumber = false;
-            this.Context = new String[0];
-        }
-        // 맨 처음 위치에 있지만, 이미 존재하고 있는 값이 있는 경우
-        else if((Position == 1) && (Number>1)){
-            Number--;
-            String[] Temp = new String[this.Number];
-            for (int i = 0; i < this.Number; i++)
-                Temp[i] = this.Context[i+1];
-            this.Context = new String[Number];
-            for(int i=0;i<this.Number;i++) {
-                this.Context[i] = "";
-                this.Context[i] = Temp[i];
-            }
+  // 삭제하는 함수
+  public void Delete(int Position){
+      // 삭제 불가능한 위치에 삽입
+      if(this.Number == 0){
+          System.out.println("삭제할 것이 없습니다.");
+      }
+      else if((Position>(this.Number + 2)) || (Position<1)){
+          System.out.println("삭제할 수 없습니다.");
+      }
+      // 맨 처음 삭제
+      else if(Position == 1 && Number ==1){
+          this.Number = 0;
+          this.EmptyNumber = false;
+          this.Context = new String[0];
+      }
+      // 맨 처음 위치에 있지만, 이미 존재하고 있는 값이 있는 경우
+      else if((Position == 1) && (Number>1)){
+          Number--;
+          String[] Temp = new String[this.Number];
+          for (int i = 0; i < this.Number; i++)
+              Temp[i] = this.Context[i+1];
+          this.Context = new String[Number];
+          for(int i=0;i<this.Number;i++) {
+              this.Context[i] = "";
+              this.Context[i] = Temp[i];
+          }
 
-        }
-        // 맨 마지막 삭제
-        else if(Position == this.Number+1) {
+      }
+      // 맨 마지막 삭제
+      else if(Position == this.Number+1) {
             this.Number--;
             String[] Temp = new String[this.Number];
             for(int i=0;i<Number;i++){
@@ -119,46 +121,45 @@ public class List {
                 this.Context[i] = Temp[i];
             }
 
-        } // 중간에 삭제하는 경우
-        else{
+      } // 중간에 삭제하는 경우
+      else{
 
-            // 포인터가 없기 떄문에 동적 배열을 사용한다.
-            String[] left = new String[(Position-1)];
-            String[] right = new String[this.Number - (Position-1)];
-            for(int i=0;i<Position-1;i++){
-                left[i] = this.Context[i];
-            }
-            for(int i=Position-1;i<this.Number;i++){
-                right[i-(Position-1)] = this.Context[i];
-            }
-            this.Number--;
-            this.Context = new String[this.Number];
-            for(int i=0;i<this.Number;i++){
-                if(i<(Position-1)){
-                    this.Context[i] = "";
-                    this.Context[i] = left[i];
-                }else {
-                    this.Context[i] = "";
-                    this.Context[i] = right[i-(Position-1)];
-                }
-            }
-        }
-        for(int i=0;i<this.Number;i++)
-            System.out.println(this.Context[i]);
+          // 포인터가 없기 떄문에 동적 배열을 사용한다.
+          String[] left = new String[(Position-1)];
+          String[] right = new String[this.Number - (Position-1)];
+          for(int i=0;i<Position-1;i++){
+              left[i] = this.Context[i];
+          }
+          for(int i=Position-1;i<this.Number;i++){
+              right[i-(Position-1)] = this.Context[i];
+          }
+          this.Number--;
+          this.Context = new String[this.Number];
+          for(int i=0;i<this.Number;i++){
+              if(i<(Position-1)){
+                  this.Context[i] = "";
+                  this.Context[i] = left[i];
+              }else {
+                  this.Context[i] = "";
+                  this.Context[i] = right[i-(Position-1)];
+              }
+          }
+      }
+      for(int i=0;i<this.Number;i++)
+          System.out.println(this.Context[i]);
 
-    }
-    // 해당 위치를 탐색하는 함수
-    public void Retrieve(int Position){
-        if(this.Number == 0){
-            System.out.println("데이터가 없습니다.");
-        }
-        if(Position < this.Number)
-            System.out.println("해당 위치에 Data가 없다.");
+  }
+  // 해당 위치를 탐색하는 함수
+  public void Retrieve(int Position){
+      if(this.Number == 0){
+          System.out.println("데이터가 없습니다.");
+      }
+      if(Position < this.Number)
+          System.out.println("해당 위치에 Data가 없다.");
         else {
-            System.out.println(Position + ": " + this.Context[Position-1]);
-        }
-    }
-    //
+          System.out.println(Position + ": " + this.Context[Position-1]);
+      }
+  }
   // 다시 생성
   public void Create(){
       this.Number = 0;
@@ -190,8 +191,31 @@ public class List {
           System.out.println((i+1)+":" + this.Context[i]);
    }
 
+
+   /* 스택 전용 함수 */
+   // 삽입
+   public void Push(String Data){
+        this.Insert(1,Data);
+   }
+   //삭제
+   public void Pop(){
+        this.Delete(1);
+   }
+   //검색
+   public void GetTop(){
+       this.Retrieve(1);
+   }
+   // 초기화\
+    public void Init(){
+      this.Create();
+    }
+   // 파괴
+    public void Stack_Destroy(){
+        this.Destroy();
+    }
+
   public static void main(String[] args){
-    List list = new List();
+      Stack stack = new Stack();
     int Position;
     String Data;
     Scanner scanner = new Scanner(System.in);
@@ -205,43 +229,37 @@ public class List {
             // 삽입 기능
             case 1:
                 System.out.println("삽입 기능입니다.");
-                System.out.print("해당 위치 :");
-                Position = scanner.nextInt();
                 scanner = new Scanner(System.in);
                 System.out.print("해당 Data :");
                 Data = scanner.nextLine();
-                list.Insert(Position,Data);
+                stack.Push(Data);
             break;
             // 삭제 기능
             case 2:
                 System.out.println("삭제 기능입니다.");
-                scanner = new Scanner(System.in);
-                System.out.print("삭제할 위치 :");
-                Position = scanner.nextInt();
-                list.Delete(Position);
+                stack.Pop();
             break;
             // 검색 기능
             case 3:
                 scanner = new Scanner(System.in);
-                System.out.print("검색할 위치 :");
-                Position = scanner.nextInt();
-                list.Retrieve(Position);
+                System.out.print("검색 기능입니다.");
+                stack.GetTop();
             break;
             // 길이 기능
             case 4:
-                list.Length();
+                stack.Length();
             break;
             case 5:
-                list.Create();
+                stack.Init();
             break;
             case 6:
-                list.Destroy();
+                stack.Stack_Destroy();
             break;
             case 7:
-                list.Isempty();
+                stack.Isempty();
             break;
             case 8:
-                list.AllRetrieve();
+                stack.AllRetrieve();
             break;
         }
 
