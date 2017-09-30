@@ -154,7 +154,7 @@ public class Stack {
       if(this.Number == 0){
           System.out.println("데이터가 없습니다.");
       }
-      if(Position < this.Number)
+      if(Position > this.Number)
           System.out.println("해당 위치에 Data가 없다.");
         else {
           System.out.println(Position + ": " + this.Context[Position-1]);
