@@ -56,40 +56,32 @@ public class binary_tree {
         }
     }
     // 탐색 트리 삭제
-    public void Delete(binary_tree pretree, binary_tree tree,int treevalue){
-        if(tree.Data == null){ // 노드에 Data가 없을때
-            System.out.println("삭제할 Data가 없습니다.");
-        }
-
-        else if(tree.Data == treevalue){ // 노트에 Data가 겹쳤을 때
-            // 리프노드인 경우
+    public void Delete(binary_tree tree,int treevalue){
+       // 삭제할 자료가 없을 때
+        if(tree.Data == null){
+           System.out.println("삭제할 자료가 없습니다.");
+       }else if(tree.Data > treevalue){ // 값이 작은 경우
+            tree.Delete(tree.left,treevalue);
+       }else if(tree.Data < treevalue){ // 값이 큰 경우
+            tree.Delete(tree.right,treevalue);
+       }else{ // 삭제할 값을 찾았을 때
             if(tree.left == null && tree.right == null){
-                tree.Data = null;
-            }
-            // 자식 노드가 하나인 경우
+                tree = null;
+            } // 자식 노드가 없는 경우
+            //자식 노드 하나인 경우
             else if(tree.left == null){
-                pretree.right = tree.right;
+                tree = tree.right;
             }else if(tree.right == null){
-                pretree.left  = tree.left;
+                tree = tree.left;
+            }else{
+               tree.Double_Delete(tree,tree.Data);
             }
-            // 자식노드일 경우
-            else{
-                if(tree.)
-
-            }
-
-        }// Data가 삭제하려는 위치보다 클때
-        else if(tree.Data < treevalue){
-            pretree = tree; // 이전의 부모의 루트 가져가기
-            tree.Delete(tree,tree.right,treevalue);
-        }// Data가 삭제하려는 위치보다 작을 때
-        else{
-            pretree = tree;
-            tree.Delete(tree,tree.left,treevalue);
-        }
+       }
 
     }
-
+    public void Double_Delete(binary_tree tree,int treevalue){
+       /* 추가 구축 예정 */
+    }
 
     public static void main(String[] args){
         binary_tree Binary = new binary_tree();
@@ -113,7 +105,7 @@ public class binary_tree {
                 case 3:
                     System.out.print("삭제 할 값을 넣어주세요 : ");
                     Data = scanner.nextInt();
-                    Binary.Delete(null,Binary,Data);
+                    Binary.Delete(Binary,Data);
                     break;
             }
         }
