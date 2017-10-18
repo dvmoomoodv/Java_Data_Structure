@@ -74,15 +74,18 @@ public class binary_tree {
             }else if(tree.right == null){
                 tree = tree.left;
             }else{
-               tree.Double_Delete(tree,tree.Data);
+
+                tree.Double_Delete(tree,tree.right,treevalue);
             }
        }
-
     }
-    public void Double_Delete(binary_tree tree,int treevalue){
+    public void Double_Delete(binary_tree pretree,binary_tree tree,int treevalue){
        /* 추가 구축 예정 */
+       if(tree.right== null){
+       }else{
+           pretree = tree.right;
+       }
     }
-
     public static void main(String[] args){
         binary_tree Binary = new binary_tree();
         while(true) {
