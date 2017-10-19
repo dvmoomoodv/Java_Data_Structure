@@ -12,3 +12,4 @@ Java 자료구조 ( Data_Structure )
 - Hash function : divide
 - Hash function : digits folding
 - Hash function : Open Addressing : Linear Probing
+- Hash function : Close Addressing : Bucket ( Collision 상황을 가정 )
